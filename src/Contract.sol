@@ -39,7 +39,7 @@ contract ROHGame is Ownable, ReentrancyGuard {
     event AttributeAddedToPlayer(address player, uint256 attributeId);
     event AttributeRemovedFromPlayer(address player, uint256 attributeId);
 
-    constructor(address _usdcToken) Ownable(msg.sender) {
+    constructor(address owner, address _usdcToken) Ownable(owner) {
         usdcToken = IERC20(_usdcToken);
     }
 

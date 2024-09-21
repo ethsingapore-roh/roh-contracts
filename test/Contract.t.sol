@@ -72,7 +72,7 @@ contract ROHGameTest is Test {
         player1 = address(0x1);
         player2 = address(0x2);
 
-        game = new ROHGame(address(usdc));
+        game = new ROHGame(owner , address(usdc));
 
         // Mint some USDC for players
         usdc.mint(player1, STAKE_AMOUNT * 10);
@@ -117,7 +117,9 @@ contract ROHGameTest is Test {
         vm.stopPrank();
 
         // Update health
+        vm.startPrank(owner);
         game.updateHealth(player1, 50);
+        vm.stopPrank();
 
         (uint256 health, , , ) = game.getPlayerInfo(player1);
         assertEq(health, 50);
@@ -132,7 +134,9 @@ contract ROHGameTest is Test {
 
         // Update stake
         uint256 newStake = STAKE_AMOUNT / 2;
+        vm.startPrank(owner);
         game.updateStake(player1, newStake);
+        vm.stopPrank();
 
         (, uint256 stakedAmount, , ) = game.getPlayerInfo(player1);
         assertEq(stakedAmount, newStake);
@@ -141,17 +145,21 @@ contract ROHGameTest is Test {
     }
 
     function testCreateAttribute() public {
+        vm.startPrank(owner);
         game.createAttribute("Hungry", -10);
+        vm.stopPrank();
         (string memory description, int256 healthChange) = game.attributes(1);
         assertEq(description, "Hungry");
         assertEq(healthChange, -10);
     }
 
     function testModifyAttribute() public {
+        vm.startPrank(owner);
         game.createAttribute("Hungry", -10);
         game.modifyAttribute(1, -15);
         (, int256 healthChange) = game.attributes(1);
         assertEq(healthChange, -15);
+        vm.stopPrank();
     }
 
     function testAddAttributeToPlayer() public {
@@ -162,8 +170,10 @@ contract ROHGameTest is Test {
         vm.stopPrank();
 
         // Create and add attribute
+        vm.startPrank(owner);
         game.createAttribute("Hungry", -10);
         game.addAttributeToPlayer(player1, 1);
+        vm.stopPrank();
 
         (uint256 health, , , uint256[] memory attributeIds) = game.getPlayerInfo(player1);
         assertEq(health, 90);
@@ -179,6 +189,7 @@ contract ROHGameTest is Test {
         vm.stopPrank();
 
         // Create and add attribute
+        vm.startPrank(owner);
         game.createAttribute("Hungry", -10);
         game.addAttributeToPlayer(player1, 1);
 
@@ -188,6 +199,7 @@ contract ROHGameTest is Test {
         (uint256 health, , , uint256[] memory attributeIds) = game.getPlayerInfo(player1);
         assertEq(health, 100);
         assertEq(attributeIds.length, 0);
+        vm.stopPrank();
     }
 
     function testMultipleAttributes() public {
@@ -198,6 +210,7 @@ contract ROHGameTest is Test {
         vm.stopPrank();
 
         // Create and add multiple attributes
+        vm.startPrank(owner);
         game.createAttribute("Hungry", -10);
         game.createAttribute("Poisoned", -20);
         game.createAttribute("Healed", 15);
@@ -205,6 +218,7 @@ contract ROHGameTest is Test {
         game.addAttributeToPlayer(player1, 1);
         game.addAttributeToPlayer(player1, 2);
         game.addAttributeToPlayer(player1, 3);
+        vm.stopPrank();
 
         (uint256 health, , , uint256[] memory attributeIds) = game.getPlayerInfo(player1);
         assertEq(health, 85);
@@ -219,6 +233,7 @@ contract ROHGameTest is Test {
         vm.stopPrank();
 
         // Create and add a lethal attribute
+        vm.startPrank(owner);
         game.createAttribute("Instant Death", -100);
         game.addAttributeToPlayer(player1, 1);
 

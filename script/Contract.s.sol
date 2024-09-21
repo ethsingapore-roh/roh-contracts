@@ -7,12 +7,13 @@ import "../src/Contract.sol";
 contract DeployROHGame is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("");
+        address agentAddress = vm.envAddress("");
         //USDC testnet address
         address usdcTokenAddress = vm.envAddress("0xa983fecbed621163");
 
         vm.startBroadcast(deployerPrivateKey);
 
-        ROHGame rohGame = new ROHGame(usdcTokenAddress);
+        ROHGame rohGame = new ROHGame(agentAddress, usdcTokenAddress);
 
         vm.stopBroadcast();
 
