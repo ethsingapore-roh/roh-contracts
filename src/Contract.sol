@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract ROHGame is Ownable, ReentrancyGuard {
     IERC20 public usdcToken;
@@ -26,7 +26,7 @@ contract ROHGame is Ownable, ReentrancyGuard {
     event HealthUpdated(address player, uint256 newHealth);
     event StakeUpdated(address player, uint256 newStake);
 
-    constructor(address _usdcToken) {
+    constructor(address _usdcToken) Ownable(msg.sender) {
         usdcToken = IERC20(_usdcToken);
     }
 

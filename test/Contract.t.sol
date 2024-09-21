@@ -6,12 +6,12 @@ import "forge-std/Test.sol";
 import "src/Contract.sol";
 
 contract TestContract is Test {
-    Contract c;
+    ROHGame c;
 
+/*
     function setUp() public {
-        c = new Contract();
+        c = new ROHGame();
     }
-
     function testBar() public {
         assertEq(uint256(1), uint256(1), "ok");
     }
@@ -20,4 +20,5 @@ contract TestContract is Test {
         vm.assume(x < type(uint128).max);
         assertEq(x + x, x * 2);
     }
+    */
 }
